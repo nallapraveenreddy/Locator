@@ -1,0 +1,56 @@
+extends layout
+
+include _includes/sharedHTMLfunctions
+
+block content
+  .row.banner
+    .col-12
+      h1= pageHeader.title
+  .row
+    .col-12.col-lg-9
+      .row
+        .col-12.col-md-6
+          p.rating
+            +outputRating(location.rating)
+          p 125 High Street, Reading, RG6 1PS
+          .card.card-primary
+            .card-block
+              h2.card-title Opening hours
+              each time in location.openingTimes
+                p.card-text
+                  | #{time.days} : 
+                  if time.closed
+                    | closed
+                  else
+                    | #{time.opening} - #{time.closing}
+          .card.card-primary
+            .card-block
+              h2.card-title Facilities
+              each facility in location.facilities
+                span.badge.badge-warning
+                  i.fa.fa-check
+                  | &nbsp;#{facility}
+                | &nbsp;
+        .col-12.col-md-6.location-map
+          .card.card-primary
+            .card-block
+              h2.card-title Location map
+              img.img-fluid.rounded(src=`data:image/png;base64,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`)
+      .row
+        .col-12
+          .card.card-primary.review-card
+            .card-block
+              a.btn.btn-primary.float-right(href='/location/review/new/3') Add review
+              h2.card-title Customer reviews
+              each review in location.reviews
+                .row.review
+                  .col-12.no-gutters.review-header
+                    span.rating
+                      +outputRating(review.rating)
+                    span.reviewAuthor #{review.author}
+                    small.reviewTimestamp #{review.timestamp}
+                  .col-12
+                    p !{(review.reviewText).replace(/\n/g, '<br/>')}
+    .col-12.col-lg-3
+      p.lead #{location.name} #{sidebar.context}
+      p= sidebar.callToAction
